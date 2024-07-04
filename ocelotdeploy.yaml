@@ -3,15 +3,15 @@ kind: Deployment
 metadata:
   annotations:
     kubernetes.io/change-cause: 'first'
-  name: ocelotdeploy
+  name: nginxdeploy
   namespace: ataproj
   labels:
-    app: ocelotgw
+    app: nginxgw
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ocelotgw
+      app: nginxgw
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -20,15 +20,15 @@ spec:
   template:
     metadata:
       labels:
-        app: ocelotgw
+        app: nginxgw
     spec:
       containers:
-      - name: ocelotgw
-        image: registry.ataair.ir/ataapp/argoocelot/ocelot:v1
+      - name: nginxgw
+        image: nginx:alpine
         ports:
-        - containerPort: 8080
-      imagePullSecrets:
-      - name: atareg2
+        - containerPort: 80
+      #imagePullSecrets:
+      #- name: atareg2
         #readinessProbe:
          # exec:
           #  command:
