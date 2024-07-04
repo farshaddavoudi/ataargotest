@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kubernetes.io/change-cause: 'storage added'
+  name: redisdep
+  namespace: ataproj
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.2.4
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: redispv
+          mountPath: /data
+      volumes: 
+      - name: redispv
+        persistentVolumeClaim:
+          claimName: redispvc  
